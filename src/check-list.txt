@@ -1,0 +1,9 @@
+* Accendere PC 
+* Avviare Docker Service
+* Creato cartella progetto web (es. "sito")
+* Creare file docker-compose.yml
+* Aggiungere i vari servizi (leggi "container") dentro a docker-compose.yml 
+* Bindare volume cartella src (sorgenti del sito) a /var/www/html del container 
+* Bindare porta 8080 (oppure a piacere, es 8081) alla 80 del container 
+* All'interno del Docker Service Shell dare comando docker-compose up -d (containers in  background)
+* Scrittura codice in cartella src bindata

@@ -1,0 +1,23 @@
+* Installazione ambiente con Docker
+* Istruzioni di base di Docker Compose
+* Introduzione al PHP: come raggiungere un file .php da Nginx
+* Concetto di variabile
+* Variabile di tipo integer, double, string, boolean
+* Istruzioni di scelta, if & switch
+* Case & break 
+* Array posizionali
+* Istruzione foreach per ciclare su array
+* Istruzione foreach con stampa $chiave => $valore
+* Array associativi, differenze con posizionali 
+* Ciclo for, definizione intervallo di esecuzione
+* Funzioni gettype, count, isset per lavorare con variabili e array 
+* Creare funzioni, parametri, argomenti, valori di ritorno
+* Introduzione all'HTML: cos'è un tag, come aggiungere attributi ad un tag 
+* Creare form: action e method 
+* Aggiungere input ad una form, accenni di usabilità e formattazione
+* Inviare dati attraverso le form, GET e POST a confronto, come recuperare i dati nel file .php 
+* Separazione degli ambito tra view e controller
+* Come leggere e scrivere un file
+* Introduzione alle classi
+* Utilizzare file statici come database
+* Operazioni CRUD su elementi usando database statico
