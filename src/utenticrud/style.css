@@ -1,0 +1,58 @@
+* {
+  font-family: Arial, "sans-serif";
+}
+a {
+  margin: 8px 0;
+  color: white;
+  font-size: 10px;
+  text-decoration: none;
+  padding: 5px 8px;
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: grey;
+  border-radius: 5px;
+}
+
+a.orange {
+  background-color: orange;
+}
+
+a.green {
+  background-color: green;
+}
+
+a.red {
+  background-color: red;
+}
+
+h1 {
+  color: teal;
+  font-family: Arial "sans-serif";
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+}
+
+table thead tr {
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+table tbody tr:nth-child(2n+1) {
+  background-color: #efefef;
+}
+
+table tbody tr:nth-child(2n+1) {
+  background-color: #ebebeb;
+}
+
+table thead th {
+  padding: 5px 7px;
+}
