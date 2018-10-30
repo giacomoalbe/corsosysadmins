@@ -1,100 +1,80 @@
 <?php 
-  function salvaUtenti($utenti) {
-    // Scrive gli utenti sul file utenti.csv
-    $fileHandler = fopen("utenti.csv", "w"); 
+require "funzioni.php";
 
-    $utentiStr = [];
+$campi = [
+  "ID",
+  "nome",
+  "cognome",
+  "eta",
+  "sistema operativo",
+  "professione",
+];
 
-    foreach($utenti as $utente) {
-      $utentiStr[] = implode(",", $utente);
-    }
+// 1. Valutare la modalità
+if (isset($_GET['mode'])) {
+  switch ($_GET['mode']) {
+    case 'canc':
+      $idDaCancellare = $_GET['ID']; 
 
-    $fileContent = implode("\r", $utentiStr);
-
-    fwrite($fileHandler, $fileContent);
-
-    fclose($fileHandler);
-  }
-
-  function reloadList() {
-    // Post Request Get per evitare doppia form submission
-    header("Location: index.php");
-    exit();
-  }
-
-  // 0. Caricare gli utenti 
-  $campi = [
-    "ID",
-    "nome",
-    "cognome",
-    "eta",
-    "sistema operativo",
-    "professione",
-  ];
-
-  $utenti = [];
-
-  $fileHandler = fopen("utenti.csv", "r");
-
-  while (!feof($fileHandler)) {
-    $stringaUtente = fgets($fileHandler);
-
-    if ($stringaUtente != "") {
-      $utenti[] = explode(",", $stringaUtente);
-    }
-  }
-
-  fclose($fileHandler);
-
-  // 1. Valutare la modalità
-  if (isset($_GET['mode'])) {
-    switch ($_GET['mode']) {
-      case 'canc':
-        $idDaCancellare = $_GET['ID']; 
-
-        foreach($utenti as $indice => $utente) {
-          if ($utente[0] == $idDaCancellare) {
-            //scancella l'emento ke a indice $indice dendro $utenti.
-            unset($utenti[$indice]);
-            break;
-          }
+      foreach($utenti as $indice => $utente) {
+        if ($utente[0] == $idDaCancellare) {
+          //scancella l'emento ke a indice $indice dendro $utenti.
+          unset($utenti[$indice]);
+          break;
         }
+      }
 
-        salvaUtenti($utenti);
+      salvaUtenti($utenti);
 
-        break;
-    }
+      break;
+    case 'edit':
+      // Per l'edit serve un ID 
+      // e i nuovi dati dell'utente
+      $idToEdit = $_POST['ID'];
 
-    reloadList();
+      $userToEdit = getUser($idToEdit);
+
+      $userToEdit[1] = trim($_POST['nome']);
+      $userToEdit[2] = trim($_POST['cognome']);
+      $userToEdit[3] = trim($_POST['eta']);
+      $userToEdit[4] = trim($_POST['os']);
+      $userToEdit[5] = trim($_POST['professione']);
+
+      saveUser($idToEdit, $userToEdit);
+
+      break;
+    case 'add':
+      // C'è nuovo utente, aggiungilo!
+      $nuovoUtente = [];
+
+      $ID = file_get_contents("ID");
+
+      $ID = $ID == "" ? 1 : $ID;
+
+      $nuovoUtente[] = $ID;
+      $nuovoUtente[] = trim($_POST['nome']);
+      $nuovoUtente[] = trim($_POST['cognome']);
+      $nuovoUtente[] = trim($_POST['eta']);
+      $nuovoUtente[] = trim($_POST['os']);
+      $nuovoUtente[] = trim($_POST['professione']);
+
+      file_put_contents("ID", $ID + 1);
+
+      $nuovoUtenteStringa = implode(",", $nuovoUtente) . "\n";
+
+      $fileHandler = fopen("utenti.csv", "a");
+
+      fwrite($fileHandler, $nuovoUtenteStringa);
+      fclose($fileHandler);
+
+      break;
   }
 
-  // 2. [Eventualmente] Svolgere operazione
-  if (isset($_POST['nome'])) {
-    // C'è nuovo utente, aggiungilo!
-    $nuovoUtente = [];
+  reloadList();
+}
 
-    $ID = file_get_contents("ID");
-
-    $ID = $ID == "" ? 1 : $ID;
-
-    $nuovoUtente[] = $ID;
-    $nuovoUtente[] = $_POST['nome'];
-    $nuovoUtente[] = $_POST['cognome'];
-    $nuovoUtente[] = $_POST['eta'];
-    $nuovoUtente[] = $_POST['os'];
-    $nuovoUtente[] = $_POST['professione'];
-
-    file_put_contents("ID", $ID + 1);
-
-    $nuovoUtenteStringa = implode(",", $nuovoUtente) . "\n";
-
-    $fileHandler = fopen("utenti.csv", "a");
-
-    fwrite($fileHandler, $nuovoUtenteStringa);
-    fclose($fileHandler);
-
-    reloadList();
-  }
+// 0. Caricare gli utenti 
+$utenti = getUsers(); 
 ?>
 <!DOCTYPE html>
 <html lang="en">

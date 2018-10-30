@@ -1,19 +1,57 @@
+<?php 
+require "funzioni.php";
+
+$user = [];
+$titolo = "Aggiungi";
+$modalita = "add";
+
+// 0. Verifico se è presente un ID
+if (isset($_GET['ID'])) {
+  // 1. Prendo tutti gli utenti
+  $userIdDaTrovare = $_GET['ID']; 
+
+  $user = getUser($userIdDaTrovare);
+
+  $titolo = "Modifica";
+  $modalita = "edit";
+} 
+
+$osOptions = [
+  "linux" => "Linux",
+  "winzozz" => "Windows",
+  "macos" => "MacOS",
+  "solaris" => "Solaris",
+  "bsd" => "BSD",
+];
+
+$professioneOptions = [
+  "studente" => "Studente", 
+  "docente" => "Docente", 
+  "sistemista" => "Sistemista", 
+  "programmatore" => "Programmatore", 
+  "manutenuto" => "Mantenuto", 
+];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Aggiungi Utente</title>
+  <title><?=$titolo?> Utente</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Aggiungi Utente</h1>
+  <a href="index.php">Torna alla lista</a>
+  <h1><?=$titolo?> Utente</h1>
   <form 
-    action="index.php" 
+    action="index.php?mode=<?=$modalita?>"
     method="POST">
     <div>
       <label for="input_nome">Nome: </label>
       <input 
         required
+        value="<?=$user[1]?>"
         name="nome"
         id="input_nome"
         placeholder="Inserisci il nome"
@@ -24,6 +62,7 @@
       <input 
         required
         name="cognome"
+        value="<?=$user[2]?>"
         id="input_cognome"
         placeholder="Inserisci il cognome"
         type="text">
@@ -33,6 +72,7 @@
       <input 
         required
         name="eta"
+        value="<?=trim($user[3])?>"
         id="input_eta"
         placeholder="Inserisci l'età"
         type="number">
@@ -43,11 +83,13 @@
         id="input_os" 
         name="os"
         required>
-        <option value="linux">Linux</option>
-        <option value="macos">MacOs</option>
-        <option value="winzozz">Winzozz</option>
-        <option value="solaris">Solaris</option>
-        <option value="bsd">BSD</option>
+        <?php foreach($osOptions as $value => $display) { ?>
+        <option 
+            value="<?=$value?>" 
+            <?php if (trim($user[4]) == $value) echo 'selected' ?>>
+            <?=$display?>
+        </option>
+        <?php } ?>
       </select>
     </div>
     <div>
@@ -56,15 +98,18 @@
         id="input_professione" 
         name="professione"
         required>
-        <option value="studente">Studente</option>
-        <option value="docente">Docente</option>
-        <option value="sistemista">Sistemista</option>
-        <option value="programmatore">Programmatore</option>
-        <option value="mantenuto">Mantenuto</option>
+        <?php foreach($professioneOptions as $value => $display) { ?>
+        <option 
+          value="<?=$value?>" 
+          <?php if (trim($user[5]) == $value) echo 'selected'?>>
+          <?=$display?>
+        </option>
+        <?php } ?>
       </select>
     </div>
     <div>
-      <input type="submit" value="Aggiungi Utente">
+    <input type="hidden" name="ID" value="<?=$user[0]?>">
+    <input type="submit" value="<?=$titolo?> Utente">
     </div>
   </form>
 </body>
