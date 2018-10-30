@@ -16,6 +16,8 @@ if (isset($_GET['mode'])) {
     case 'canc':
       $idDaCancellare = $_GET['ID']; 
 
+      $utenti = getUsers();
+
       foreach($utenti as $indice => $utente) {
         if ($utente[0] == $idDaCancellare) {
           //scancella l'emento ke a indice $indice dendro $utenti.
@@ -60,12 +62,7 @@ if (isset($_GET['mode'])) {
 
       file_put_contents("ID", $ID + 1);
 
-      $nuovoUtenteStringa = implode(",", $nuovoUtente) . "\n";
-
-      $fileHandler = fopen("utenti.csv", "a");
-
-      fwrite($fileHandler, $nuovoUtenteStringa);
-      fclose($fileHandler);
+      addUser($nuovoUtente);
 
       break;
   }

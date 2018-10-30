@@ -1,38 +1,4 @@
 <?php
-function connect() {
-  // Si connette al database
-  // TODO: controllare che si connetta al DB
-  return new mysqli("db", "test", "test", "test");
-} 
-
-function getProfessioni() {
-  $db = connect();
-
-  $sqlGetAllProfessioni = "SELECT 
-      id, descrizione 
-    FROM professioni";
-
-  $resultAllProfessioni = $db->query($sqlGetAllProfessioni);
-
-  // TODO: check errors :)
-
-  return $resultAllProfessioni->fetch_all();
-}
-
-function getSistemiOperativi() {
-  $db = connect();
-
-  $sqlGetAllProfessioni = "SELECT 
-      id, descrizione 
-    FROM os";
-
-  $resultAllProfessioni = $db->query($sqlGetAllProfessioni);
-
-  // TODO: check errors :)
-
-  return $resultAllProfessioni->fetch_all();
-}
-
 function getUser($userId) {
   $utenti = getUsers();
 
@@ -71,35 +37,33 @@ function printUser($userArray) {
 }
 
 function getUsers() {
-  // 0. Connettersi al DB
-  $db = connect(); 
+  $utenti = [];
 
-  // 1. Selezionare tutti utenti
-  $sqlGetAllUtenti = "
-      SELECT 
-        utenti.id,
-        nome,
-        cognome,
-        eta,
-        os.codice,
-        professioni.codice
-      FROM 
-        utenti,
-        professioni,
-        os 
-      WHERE 
-        utenti.professione_id = professioni.id 
-        AND utenti.os_id = os.id";
+  //$fileName = "utenti.csv";
+  //$fileHandler = fopen($fileName, "r");
+  //$fileContent = fread($fileHandler, filesize($fileName));
+  $fileContent = file_get_contents("utenti.csv");
+  
+  $usersStr = explode(";", $fileContent);
 
-  $resultAllUsers = $db->query($sqlGetAllUtenti);
-
-  //$utenti = $resultAllUsers->fetch_all();
-
-  while ($data = $resultAllUsers->fetch_row()) {
-    $utenti[] = $data;
+  foreach($usersStr as $userStr) {
+    if ($userStr) {
+      $utenti[] = explode(",", $userStr);
+    }
   }
 
-  // 2. Restituire utenti alla pagina
+  /*
+  while (!feof($fileHandler)) {
+    $stringaUtente = fgets($fileHandler);
+
+    if ($stringaUtente != "") {
+      $utenti[] = explode(",", $stringaUtente);
+    }
+  }
+  */
+
+  //fclose($fileHandler);
+
   return $utenti;
 }
 

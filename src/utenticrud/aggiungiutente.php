@@ -16,22 +16,8 @@ if (isset($_GET['ID'])) {
   $modalita = "edit";
 } 
 
-$osOptions = [
-  "linux" => "Linux",
-  "winzozz" => "Windows",
-  "macos" => "MacOS",
-  "solaris" => "Solaris",
-  "bsd" => "BSD",
-];
-
-$professioneOptions = [
-  "studente" => "Studente", 
-  "docente" => "Docente", 
-  "sistemista" => "Sistemista", 
-  "programmatore" => "Programmatore", 
-  "manutenuto" => "Mantenuto", 
-];
-
+$osOptions = getSistemiOperativi();
+$professioneOptions = getProfessioni();
 ?>
 
 <!DOCTYPE html>
@@ -83,11 +69,11 @@ $professioneOptions = [
         id="input_os" 
         name="os"
         required>
-        <?php foreach($osOptions as $value => $display) { ?>
+        <?php foreach($osOptions as $option) { ?>
         <option 
-            value="<?=$value?>" 
-            <?php if (trim($user[4]) == $value) echo 'selected' ?>>
-            <?=$display?>
+            value="<?=$option[0]?>" 
+            <?php if (trim($user[4]) == $option[0]) echo 'selected' ?>>
+            <?=$option[1]?>
         </option>
         <?php } ?>
       </select>
@@ -98,11 +84,11 @@ $professioneOptions = [
         id="input_professione" 
         name="professione"
         required>
-        <?php foreach($professioneOptions as $value => $display) { ?>
+        <?php foreach($professioneOptions as $option) { ?>
         <option 
-          value="<?=$value?>" 
-          <?php if (trim($user[5]) == $value) echo 'selected'?>>
-          <?=$display?>
+          value="<?=$option[0]?>" 
+          <?php if (trim($user[5]) == $option[0]) echo 'selected'?>>
+          <?=$option[1]?>
         </option>
         <?php } ?>
       </select>
